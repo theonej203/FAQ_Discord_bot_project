@@ -5,23 +5,10 @@ from discord.ext import commands
 def main():
 
     tokenFile = open("token.txt", "r")#file that stores the bot's token
-    helperFile = open("helper.txt", "r")#open file that contain list of helpers
-
     dbFile = None#tempoary file to hold list of question
 
-    helperList = []
-    tempString = ""
     numHelper = 0
-
     client = commands.Bot(command_prefix = '.')
-
-
-    while (True):
-        tempString = helperFile.readlines()
-        if(tempString == ""):
-            break
-
-        helperList.append(tempString)
 
 
     @client.event
@@ -37,6 +24,8 @@ def main():
     async def on_message(message):
         questionID = 0
         word = message.content
+
+        
         
 
         if(message.author == client.user):
@@ -77,7 +66,7 @@ def main():
             questionID = word.split(' ', 1)[0]#get the question id and return the question back
 
         
-        elif( (message.author.name in helperList) and (message.content.startswith("$AddAnswer")) ): #make sure an authorized helper can answer question
+        elif( (message.author.role.name == "helper") and (message.content.startswith("$AddAnswer")) ): #make sure only authorized helper can answer question
             word = word.split(' ', 1)[1]
             questionID = word.split(' ', 1)[0]#get the question id to add the answer to the correct question
 
