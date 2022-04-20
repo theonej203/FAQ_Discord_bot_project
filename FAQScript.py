@@ -2,6 +2,30 @@ import discord
 from discord.ext import commands
 
 
+class questions:
+    def __init__(self, question) -> None:
+        self.questionText = question #hold the question text
+        self.id = -1 #the question id, this element will be unique
+        self.answer = "" #the answer to the question
+        self.creator = "" #who asked the question
+        self.channelName = "" #the channel where the question came from, like what course is the question belong to
+
+    def getQuestion(self): 
+        return self.questionText
+    
+    def getID(self):
+        return self.id
+
+    def getAnswer(self):
+        return self.answer
+
+    def getCreator(self):
+        return self.creator
+
+    def getChannelName(self):
+        return self.channelName
+
+
 def main():
 
     tokenFile = open("token.txt", "r")#file that stores the bot's token
