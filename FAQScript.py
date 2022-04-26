@@ -1,37 +1,54 @@
 import discord
 from discord.ext import commands
 
-
-class questions:
-    def __init__(self, question) -> None:
-        self.questionText = question #hold the question text
-        self.id = -1 #the question id, this element will be unique
-        self.answer = "" #the answer to the question
-        self.creator = "" #who asked the question
-        self.channelName = "" #the channel where the question came from, like what course is the question belong to
-
-    def getQuestion(self): 
-        return self.questionText
-    
-    def getID(self):
-        return self.id
-
-    def getAnswer(self):
-        return self.answer
-
-    def getCreator(self):
-        return self.creator
-
-    def getChannelName(self):
-        return self.channelName
+import mysql.connector
 
 
 def main():
-
     tokenFile = open("token.txt", "r")#file that stores the bot's token
-    dbFile = None#tempoary file to hold list of question
+    
+    dbCursor = None
 
-    numHelper = 0
+
+    try:
+        db = mysql.connector.connect(
+            host = "localhost",
+            user = "root",
+            passwd = "root",
+            database = "qnaDB"
+        )
+
+        dbCursor = db.cursor()
+        
+
+    except mysql.OperationalError as e:
+        message = e.args[0]
+        if message.startswith("Unknown database"):
+
+            db = mysql.connector.connect(
+                host = "localhost",
+                user = "root",
+                passwd = "root"
+            )
+
+            dbCursor = db.cursor()
+
+            dbCursor.execute("CREATE DATABASE qnaDB")
+            dbCursor.execute("CREATE TABLE questionTable (questionText VARCHAR(100), userName VARCHAR(20), courseName VARCHAR(10), id INT PRIMARY KEY AUTO_INCREMENT)")
+            dbCursor.execute("CREATE TABLE answerTable (answerText VARCHAR(100), userName VARCHAR(20), questionID INT)")
+
+        else:
+            raise
+
+
+
+    
+
+    
+
+    
+
+    
     client = commands.Bot(command_prefix = '.')
 
 
